@@ -1,4 +1,5 @@
 const linkConstants = require('./linker-constants');
+const PyatchAPI = require('./pyatch-api');
 /**
  * @fileoverview
  * @author Elliot Roe
@@ -8,7 +9,7 @@ const linkConstants = require('./linker-constants');
  */
 class PyatchLinker {
     constructor() {
-        this._baseImports = [linkConstants.bridge_lib];
+        this._baseImports = [];
     }
 
     /**
@@ -26,7 +27,30 @@ class PyatchLinker {
      * @returns {string} - The method header for the target async function.
      */
     generateAsyncFuncHeader(targetId, postfix = '0') {
-        return linkConstants.async_func_header + targetId + '_' + postfix + '():\n\t';
+        return linkConstants.async_func_header + targetId + '_' + postfix + '(' + linkConstants.bridge_param + '):\n';
+    }
+
+    /**
+     * Generates comment header that signifies the beginning of a target's threads
+     * @param {string} targetId - The id of the target.
+     * @returns {string} - comment header
+     */
+    generateTargetHeader(targetId) {
+        return "## -- " + targetId + " -- ##\n\n";
+    }
+
+    /**
+     * Generates the line of python code to unpack all the pyatch api primitives
+     * @returns {string} - the line of python
+     */
+    generateApiUnpackLine() {
+        let prims = PyatchAPI.getPrimNames();
+        //let prims = ["say", "move", "think"]
+
+        let inner = prims.join();
+        let unpackLine = "[" + inner + "] = " + linkConstants.bridge_param + "\n";
+
+        return unpackLine;
     }
 
     /**
@@ -48,22 +72,24 @@ class PyatchLinker {
      */
     generatePython(...targets) {
         const imports = this._baseImports;
-        const importsString = imports.join('\n');
-        const targetUpdateFunc = linkConstants.target_update_func;
 
-        var codeString = imports.join('\n');
+        let codeString = "";
 
         for (const target of targets) {
             const targetId = target.id;
             const targetCode = target.code;
+
+            codeString += this.generateTargetHeader(targetId);
+
             for (let i = 0; i < targetCode.length; i++) {
-                const code = targetCode[i];
+                const code = targetCode[i].replace('\n', '\n' + linkConstants.python_tab_char);
                 const header = this.generateAsyncFuncHeader(targetId, i.toString());
-                codeString += header + code + '\n';
+                const unpackLine = this.generateApiUnpackLine();
+                codeString += header + linkConstants.python_tab_char + unpackLine + linkConstants.python_tab_char + code + '\n\n';
             }
         }
 
-        
+       return codeString; 
     }
 }
 module.exports = PyatchLinker;
