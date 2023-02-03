@@ -1,0 +1,25 @@
+{
+  "name": "pyatch-linker",
+  "version": "1.0.0",
+  "description": "A package to link individual target python scripts into a single executable python string that can effectively communicate with the Pyatch VM.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ElliotRoe/pyatch-linker.git"
+  },
+  "keywords": [
+    "pyatch"
+  ],
+  "author": "Elliot Roe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ElliotRoe/pyatch-linker/issues"
+  },
+  "homepage": "https://github.com/ElliotRoe/pyatch-linker#readme",
+  "dependencies": {
+    "jest": "^29.3.1"
+  }
+}
