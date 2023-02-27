@@ -4,7 +4,7 @@
   "description": "A package to link individual target python scripts into a single executable python string that can effectively communicate with the Pyatch VM.",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "mocha --reporter spec"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/ElliotRoe/pyatch-linker#readme",
   "dependencies": {
-    "jest": "^29.3.1"
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0"
   }
 }

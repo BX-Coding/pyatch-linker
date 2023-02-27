@@ -1,5 +1,5 @@
 const linkConstants = require('./linker-constants');
-const PyatchAPI = require('./pyatch-api');
+// const PyatchAPI = require('./pyatch-api');
 /**
  * @fileoverview
  * @author Elliot Roe
@@ -44,8 +44,8 @@ class PyatchLinker {
      * @returns {string} - the line of python
      */
     generateApiUnpackLine() {
-        let prims = PyatchAPI.getPrimNames();
-        //let prims = ["say", "move", "think"]
+        //let prims = PyatchAPI.getPrimNames();
+        let prims = ["say", "move", "think"]
 
         let inner = prims.join();
         let unpackLine = "[" + inner + "] = " + linkConstants.bridge_param + "\n";
