@@ -1,2 +1,2 @@
 # pyatch-linker
-A package to link individual target python scripts into a single executable python string that can effectively communicate with the Pyatch VM.
+This repo has been archived as its functionality is internal to the Patch-VM
